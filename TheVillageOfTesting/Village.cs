@@ -45,102 +45,127 @@ public class Village
         }
         if (workers.Count < houses)
         {
-            while (true)
+            if (occupation.Equals("Farmer"))
             {
-                if (occupation.Equals("Farmer"))
-                {
-                    Worker worker = new Worker(name, occupation, () => AddFood());
-                    workers.Add(worker);
-                }
-                else if (occupation.Equals("Lumberjack"))
-                {
-                    Worker worker = new Worker(name, occupation, () => AddWood());
-                    workers.Add(worker);
-                }
-                else if (occupation.Equals("Miner"))
-                {
-                    Worker worker = new Worker(name, occupation, () => AddMetal());
-                    workers.Add(worker);
-                }
-                else if (occupation.Equals("Builder"))
-                {
-                    Worker worker = new Worker(name, occupation, () => Build());
-                    workers.Add(worker);
-                }
-                else
-                {
-                    Console.WriteLine("Please Enter a valid number:");
-                }
+                Worker worker = new Worker(name, "Farmer", () => AddFood());
+                workers.Add(worker);
+            }
+            else if (occupation.Equals("Lumberjack"))
+            {
+                Worker worker = new Worker(name, "Lumberjack", () => AddWood());
+                workers.Add(worker);
+            }
+            else if (occupation.Equals("Miner"))
+            {
+                Worker worker = new Worker(name, "Miner", () => AddMetal());
+                workers.Add(worker);
+            }
+            else if (occupation.Equals("Builder"))
+            {
+                Worker worker = new Worker(name, "Builder", () => Build());
+                workers.Add(worker);
+            }
+            else
+            {
+                Console.WriteLine("You wrote an invalid choice:");
             }
         }
         else
         {
-            Console.WriteLine("You don't have enough houses to add more workers.");
+            Console.WriteLine("You don't have enough room to add another worker:");
         }
     }
 
     public void AddProject(string name)
     {
-        while (true)
+        if (name.Equals("House"))
         {
-            Console.WriteLine("What building do you want to start building:");
-            Console.WriteLine($"You have {wood} Wood and {metal} Metal:");
-            Console.WriteLine("1. House: 5 Wood and 0 Metal: 3 Days to build:");
-            Console.WriteLine("2. Woodmill: 5 Wood and 1 Metal: 5 Days to build:");
-            Console.WriteLine("3. Quarry: 3 Wood and 5 Metal: 7 Days to build:");
-            Console.WriteLine("4. Farm: 5 Wood and 2 Metal: 5 Days to build:");
-            Console.WriteLine("5. Castle: 50 Wood and 50 Metal: 50 Days to build:");
-            Console.WriteLine("6. Go back:");
-            int userChoice = Convert.ToInt32(Console.ReadLine());
-            if (userChoice == 1)
+            if (wood >= house.woodCost && metal >= house.metalCost)
             {
                 projects.Add(house);
-                break;
-            }
-            else if (userChoice == 2)
-            {
-                projects.Add(woodmill);
-                break;
-            }
-            else if (userChoice == 3)
-            {
-                projects.Add(quarry);
-                break;
-            }
-            else if (userChoice == 4)
-            {
-                projects.Add(farm);
-                break;
-            }
-            else if (userChoice == 5)
-            {
-                projects.Add(castle);
-                break;
-            }
-            else if (userChoice == 6)
-            {
-                break;
+                wood -= house.woodCost;
+                metal -= house.metalCost;
             }
             else
             {
-                Console.WriteLine("Your choice is not valid. Please Enter a valid number:");
-                Console.WriteLine("Press any key to return:");
-                Console.ReadKey();
+                Console.WriteLine("You don't have enogh materials for a house:");
             }
+        }
+        else if (name.Equals("Woodmill"))
+        {
+            if (wood >= woodmill.woodCost && metal >= woodmill.metalCost)
+            {
+                projects.Add(woodmill);
+                wood -= woodmill.woodCost;
+                metal -= woodmill.metalCost;
+            }
+            else
+            {
+                Console.WriteLine("You don't have enogh materials for a woodmill:");
+            }
+        }
+        else if (name.Equals("Quarry"))
+        {
+            if (wood >= quarry.woodCost && metal >= quarry.metalCost)
+            {
+                projects.Add(quarry);
+                wood -= quarry.woodCost;
+                metal -= quarry.metalCost;
+            }
+            else
+            {
+                Console.WriteLine("You don't have enogh materials for a quarry:");
+            }
+        }
+        else if (name.Equals("Farm"))
+        {
+            if (wood >= farm.woodCost && metal >= farm.metalCost)
+            {
+                projects.Add(farm);
+                wood -= farm.woodCost;
+                metal -= farm.metalCost;
+            }
+            else
+            {
+                Console.WriteLine("You don't have enogh materials for a farm:");
+            }
+        }
+        else if (name.Equals("Castle"))
+        {
+            if (wood >= castle.woodCost && metal >= castle.metalCost)
+            {
+                projects.Add(castle);
+                wood -= castle.woodCost;
+                metal -= castle.metalCost;
+            }
+            else
+            {
+                Console.WriteLine("You don't have enogh materials for a castle:");
+            }
+        }
+        else
+        {
+            Console.WriteLine("You wrote an invalid choice:");
         }
     }
 
     public void Day()
     {
-        foreach (Worker workers in workers)
+        if (workers.Count != 0)
         {
-            if(workers.daysHungry == 0)
-            {
-                workers.DoWork();
-            }
             FeedWorkers();
+            foreach (Worker workers in workers)
+            {
+                if (workers.daysHungry == 0)
+                {
+                    workers.DoWork();
+                }
+            }
             daysGone++;
-            BuryDead();
+        }
+        else
+        {
+            Console.WriteLine("You don't have any workers to do any work\nPlease add some workers:");
         }
     }
 
@@ -155,13 +180,7 @@ public class Village
                 farms += 10;
             }
         }
-        foreach (Worker worker in workers)
-        {
-            if (worker.occupation == "foo")
-            {
-                foodPerDay += 5 + farms;
-            }
-        }
+        foodPerDay += 5 + farms;
         food += foodPerDay;
     }
 
@@ -176,13 +195,7 @@ public class Village
                 quarrys += 2;
             }
         }
-        foreach (Worker worker in workers)
-        {
-            if (worker.occupation == "foo")
-            {
-                metalPerDay += 1 + quarrys;
-            }
-        }
+        metalPerDay += 1 + quarrys;
         metal += metalPerDay;
     }
 
@@ -197,46 +210,60 @@ public class Village
                 woodmill += 2;
             }
         }
-        foreach (Worker worker in workers)
-        {
-            if (worker.occupation == "foo")
-            {
-                woodPerDay += 1 + woodmill;
-            }
-        }
+        woodPerDay += 1 + woodmill;
         wood += woodPerDay;
     }
 
     public void Build()
     {
-        Building currentProject = projects[0];
-        if (currentProject.daysWorkedOn < currentProject.daysToComplete)
+        if (projects.Count != 0)
         {
-            currentProject.daysWorkedOn++;
-        }
-        else if (currentProject.daysWorkedOn >= currentProject.daysToComplete)
-        {
-            currentProject.complete = true;
-            //var selected = from completedProject in projects where completedProject.complete == true select completedProject;
-            var selected = projects.Where(completedProject => completedProject.complete == true).ToList();
-            selected.ForEach(completedProject => projects.Remove(completedProject));
-            buildings.AddRange(selected);
+            Building currentProject = projects[0];
+            if (currentProject.daysWorkedOn < currentProject.daysToComplete)
+            {
+                currentProject.daysWorkedOn++;
+            }
+            if (currentProject.daysWorkedOn >= currentProject.daysToComplete)
+            {
+                currentProject.complete = true;
+                var selected = projects.Where(completedProject => completedProject.complete == true).ToList();
+                selected.ForEach(completedProject => projects.Remove(completedProject));
+                buildings.AddRange(selected);
+            }
         }
     }
 
     public void FeedWorkers()
     {
-        Worker.Feed();
+        foreach (Worker worker in workers)
+        {
+            if (worker.alive == true)
+            {
+                if (worker.daysHungry < 40)
+                {
+                    if (food > 0 && worker.daysHungry >= 0)
+                    {
+                        food -= 1;
+                        worker.daysHungry = 0;
+                        worker.hungry = false;
+                    }
+                    else
+                    {
+                        worker.daysHungry++;
+                        worker.hungry = true;
+                        Console.WriteLine("You don't have enough food to feed the people");
+                    }
+                }
+                else
+                {
+                    worker.alive = false;
+                }
+            }
+        }
     }
 
     public void BuryDead()
     {
-        foreach (Worker worker in workers)
-        {
-            if (worker.alive == false)
-            {
-                workers.Remove(worker);
-            }
-        }
+        workers.RemoveAll(workers => workers.alive== false);
     }
 }
