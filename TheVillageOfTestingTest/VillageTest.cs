@@ -19,7 +19,7 @@ public class VillageTest
         Assert.Equal(expectedWorkers, workerCount);
     }
     [Fact]
-    public void Adding2Worker_ShouldHave2Worker()
+    public void Adding2Workers_ShouldHave2Workers()
     {
         //given
         Village village = new Village();
@@ -34,7 +34,7 @@ public class VillageTest
         Assert.Equal(expectedWorkers, workerCount);
     }
     [Fact]
-    public void Adding3Worker_ShouldHave3Worker()
+    public void Adding3Workers_ShouldHave3Workers()
     {
         //given
         Village village = new Village();
@@ -50,7 +50,7 @@ public class VillageTest
         Assert.Equal(expectedWorkers, workerCount);
     }
     [Fact]
-    public void AddingWorkerWhenNoSpace_NoWorkerShouldBeAdded()
+    public void AddingWorkersWhenNoSpace_NoWorkersShouldBeAdded()
     {
         //given
         Village village = new Village();
@@ -73,6 +73,7 @@ public class VillageTest
         //given
         Village village = new Village();
         village.AddWorker("Jim", "Miner");
+        village.food = 10;
         village.metal = 0;
         int expectedMetal = 1;
 
@@ -84,19 +85,61 @@ public class VillageTest
         Assert.Equal(expectedMetal, actualMetal);
         
     }
-    /*
+    
     [Fact]
     public void TestingDayWithNoWorkers()
     {
         //given
         Village village = new Village();
+        int expectedDaysGone = 0;
 
         //when
         village.Day();
+        int actualDaysGone = village.daysGone;
 
         //then
-    
-    }*/
+        Assert.Equal(expectedDaysGone, actualDaysGone);
+    }
+    [Fact]
+    public void TestingDayWithWorkersAndEnoughFood()
+    {
+        //given
+        Village village = new Village();
+        village.AddWorker("Jim", "Miner");
+        village.AddWorker("Bob", "Miner");
+        village.AddWorker("John", "Miner");
+        village.AddWorker("Jimmy", "Miner");
+        village.AddWorker("Louis", "Miner");
+        village.food = 10;
+        int expectedMetal = 5;
+
+        //when
+        village.Day();
+        int actualMetal = village.metal;
+
+        //then
+        Assert.Equal(expectedMetal, actualMetal);
+    }
+    [Fact]
+    public void TestingDayWithWorkersAndNotEnoughFood()
+    {
+        //given
+        Village village = new Village();
+        village.AddWorker("Jim", "Miner");
+        village.AddWorker("Bob", "Miner");
+        village.AddWorker("John", "Miner");
+        village.AddWorker("Jimmy", "Miner");
+        village.AddWorker("Louis", "Miner");
+        village.food = 3;
+        int expectedMetal = 3;
+
+        //when
+        village.Day();
+        int actualMetal = village.metal;
+
+        //then
+        Assert.Equal(expectedMetal, actualMetal);
+    }
     [Theory]
     [InlineData("House", 10, 12, 5, 12)]
     [InlineData("House", 6, 1, 1, 1)]
@@ -310,5 +353,46 @@ public class VillageTest
 
         //then
         Assert.Equal(expectedWorekersLeft, actualWorkersLeft);
+    }
+    [Fact]
+    public void TestHowLongToBuildCastleFromStart()
+    {
+        //given
+        Village village = new Village();
+        int expectedDaysGone = 54;
+
+        //when
+        village.AddWorker("Joe", "Miner");
+        village.AddWorker("Jim", "Lumberjack");
+        village.AddWorker("John", "Builder");
+        village.AddWorker("Joakim", "Builder");
+        village.AddWorker("Luna", "Farmer");
+
+        for(int i = 0; i < 5; i++) 
+        {
+            village.Day();
+        }
+        village.AddProject("Quarry");
+
+        for(int i = 0; i < 5; i++)
+        {
+            village.Day();
+        }
+        village.AddProject("Woodmill");
+        for(int i = 0; i < 19; i++)
+        {
+            village.Day();
+        }
+        village.AddProject("Castle");
+        do
+        {
+            village.Day();
+        }
+        while (village.buildings.Count == 5);
+
+        int actualDaysGone = village.daysGone;
+
+        //then
+        Assert.Equal(expectedDaysGone, actualDaysGone);
     }
 }

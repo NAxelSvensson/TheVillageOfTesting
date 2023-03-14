@@ -8,12 +8,15 @@ namespace TheVillageOfTesting;
 
 public class Building
 {
+    //Attributes 
     public string name = "";
     public int woodCost;
     public int metalCost;
     public int daysWorkedOn;
     public int daysToComplete;
     public bool complete;
+
+    //Constructor
     public Building(string name, int woodCost, int metalCost, int daysToComplete)
     {
         this.name = name;

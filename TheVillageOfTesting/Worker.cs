@@ -8,14 +8,18 @@ namespace TheVillageOfTesting;
 
 public class Worker
 {
+    //Creating a delegate
     public delegate void WorkerDelegate();
     public WorkerDelegate workerDelegate;
 
+    //Attributes
     public string name = "";
     public string occupation = "";
     public bool hungry;
     public int daysHungry;
     public bool alive;
+
+    //Constructor
     public Worker(string name, string occupation, WorkerDelegate workerDelegate)
     {
         this.name = name;
@@ -26,11 +30,14 @@ public class Worker
         alive = true;
     }
 
+    //Method to call a delegate that later calls what type of work the worker should do
     public void DoWork()
     {
+        //Calls the delegate "workerDelegate"
         workerDelegate.Invoke();
     }
 
+    /*
     public static void Feed()
     {
         Village village = new Village();
@@ -57,4 +64,5 @@ public class Worker
             }
         }
     }
+    */
 }
