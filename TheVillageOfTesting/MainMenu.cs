@@ -44,7 +44,7 @@ public class MainMenu
 
                         //Writing that the user have won and closes the program
                         Console.WriteLine("YOU HAVE WON!");
-                        break;
+                        return;
                     }
                 }
                 //Getting all the workers in "workers" list

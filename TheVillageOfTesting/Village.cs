@@ -29,7 +29,9 @@ public class Village
     public Village()
     {
         //Adding 10 to food
-        food = 10;
+        food = 100000;
+        wood = 1000;
+        metal = 1000;
 
         //For loop that runs 3 times
         for (int i = 0; i < 3; i++)
